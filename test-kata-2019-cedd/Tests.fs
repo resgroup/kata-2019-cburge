@@ -8,13 +8,22 @@ open BerlinClock
 
 [<Fact>]
 let ``Seconds light is off for 12:40:01``() = 
-   (toBerlinClockTime "12:40:01").Seconds =! "O"
+   (BerlinClock.fromJulianTime "12:40:01").Seconds =! "O"
 
 [<Fact>]
+// this test was failing for a while, because I had changed
+// the function name, but not the value in the test. Using
+// a parameterised test would improve this
 let ``Seconds light is on for 10:30:10``() = 
-   (toBerlinClockTime "10:30:10").Seconds =! "Y"
+   (BerlinClock.fromJulianTime "10:30:10").Seconds =! "Y"
 
+[<Fact>]
+let ``3 Five-Hour lights are on for 16:00:00``() = 
+   (BerlinClock.fromJulianTime "16:00:00").FiveHours =! "RRRO"
 
+[<Fact>]
+let ``2 One-Hour lights are on for 07:00:00``() = 
+   (BerlinClock.fromJulianTime "07:00:00").SingleHours =! "RROO"
 
 
 
