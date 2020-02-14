@@ -20,8 +20,8 @@ let rowLights lightCharacter lightOffCharacter lightsOn lightsInRow =
     String.Join("", Enumerable.Repeat(lightCharacter, lightsOn)) 
     + String.Join("", Enumerable.Repeat(lightOffCharacter, lightsInRow - lightsOn))
 
-let parentRowLights lightCharacter lightOffCharacter julianTimeUnitPerLight julianTimeUnit timeUnitLimit =
-    let lightsInRow = (julianTimeUnitPerLight - 1) / julianTimeUnitPerLight
+let parentRowLights lightCharacter lightOffCharacter julianTimeUnitPerLight julianTimeUnit juliantTimeUnitLimit =
+    let lightsInRow = (juliantTimeUnitLimit - 1) / julianTimeUnitPerLight
     let lightsOn = julianTimeUnit / julianTimeUnitPerLight
     
     rowLights lightCharacter lightOffCharacter lightsOn lightsInRow
