@@ -7,8 +7,23 @@ open FsCheck
 open BerlinClock
 
 [<Fact>]
-let ``Seconds light is on for 12:40:01``() = 
-   toBerlinClockTime "12:40:01" = 1
+let ``Seconds light is off for 12:40:01``() = 
+   (toBerlinClockTime "12:40:01").Seconds =! "O"
+
+[<Fact>]
+let ``Seconds light is on for 10:30:10``() = 
+   (toBerlinClockTime "10:30:10").Seconds =! "Y"
+
+
+
+
+
+
+
+
+
+
+
 
 
 // double backticks allow us to put spaces in names, which makes the test names clear / more like english / better when you see the test output
