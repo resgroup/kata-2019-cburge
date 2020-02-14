@@ -8,34 +8,36 @@ type BerlinClockTime = {
     Seconds:string; 
     FiveHours:string;
     SingleHours:string;
+    FiveMinutes:string;
 }
 
 // Functions have to be defined higher up in the file
 // than others which use them, which is an annoyance,
 // and against most coding guidelines
 // Probably there is a way of sorting this out
-let rowLights lightsOn lightsInRow =
-    String.Join("", Enumerable.Repeat('R', lightsOn)) 
+let rowLights lightCharacter lightsOn lightsInRow =
+    String.Join("", Enumerable.Repeat(lightCharacter, lightsOn)) 
     + String.Join("", Enumerable.Repeat('O', lightsInRow - lightsOn))
 
-let rowLightsFromTimeUnit timeUnitPerLight berlinTimeUnit timeUnitLimit =
-    let lightsInRow = timeUnitLimit / timeUnitPerLight
+let rowLightsFromTimeUnit lightCharacter timeUnitPerLight berlinTimeUnit timeUnitLimit =
+    let lightsInRow = (timeUnitLimit - 1) / timeUnitPerLight
     let lightsOn = berlinTimeUnit / timeUnitPerLight
     
-    rowLights lightsOn lightsInRow
+    rowLights lightCharacter lightsOn lightsInRow
 
-let remainderRowLights timeUnitPerLight berlinTimeUnit =
+let remainderRowLights lightCharacter timeUnitPerLight berlinTimeUnit =
     let lightsInRow = timeUnitPerLight - 1
     let lightsOn = berlinTimeUnit % timeUnitPerLight
     
-    rowLights lightsOn lightsInRow
+    rowLights lightCharacter lightsOn lightsInRow
 
 
 let fromJulianTimeComponents hours minutes seconds =
     { 
         Seconds = if (seconds % 2) = 1 then "O" else "Y";
-        FiveHours = rowLightsFromTimeUnit 5 hours 24
-        SingleHours = remainderRowLights 5 hours
+        FiveHours = rowLightsFromTimeUnit "R" 5 hours 24
+        SingleHours = remainderRowLights "R" 5 hours
+        FiveMinutes = rowLightsFromTimeUnit "Y" 5 minutes 60
     }
 
 let fromJulianTime (julianTime : string) =
@@ -45,7 +47,8 @@ let fromJulianTime (julianTime : string) =
     | Success(result, _, _)   -> result
     | Failure(errorMessage, _, _) -> { 
         Seconds = errorMessage; 
-        FiveHours = errorMessage 
-        SingleHours = errorMessage 
+        FiveHours = errorMessage; 
+        SingleHours = errorMessage; 
+        FiveMinutes= errorMessage;
       }
 
