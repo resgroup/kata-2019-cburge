@@ -9,6 +9,7 @@ type BerlinClockTime = {
     FiveHours:string;
     SingleHours:string;
     FiveMinutes:string;
+    SingleMinutes:string;
 }
 
 // Functions have to be defined higher up in the file
@@ -38,6 +39,7 @@ let fromJulianTimeComponents hours minutes seconds =
         FiveHours = rowLightsFromTimeUnit "R" 5 hours 24
         SingleHours = remainderRowLights "R" 5 hours
         FiveMinutes = rowLightsFromTimeUnit "Y" 5 minutes 60
+        SingleMinutes = remainderRowLights "Y" 5 minutes
     }
 
 let fromJulianTime (julianTime : string) =
@@ -49,6 +51,7 @@ let fromJulianTime (julianTime : string) =
         Seconds = errorMessage; 
         FiveHours = errorMessage; 
         SingleHours = errorMessage; 
-        FiveMinutes= errorMessage;
+        FiveMinutes = errorMessage;
+        SingleMinutes = errorMessage;
       }
 

@@ -29,6 +29,9 @@ let ``2 One-Hour lights are on for 07:00:00``() =
 let ``4 Five-Minute lights are on for 07:23:00``() = 
    (BerlinClock.fromJulianTime "07:23:00").FiveMinutes =! "YYYYOOOOOOO"
 
+[<Fact>]
+let ``1 One-Minute lights is on for 07:31:00``() = 
+   (BerlinClock.fromJulianTime "07:31:00").SingleMinutes =! "YOOO"
 
 
 
