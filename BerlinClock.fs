@@ -5,41 +5,72 @@ open System.Linq
 open System
 
 type BerlinClockTime = {
-    Seconds:string; 
-    FiveHours:string;
-    SingleHours:string;
-    FiveMinutes:string;
-    SingleMinutes:string;
+    Seconds:string
+    FiveHours:string
+    SingleHours:string
+    FiveMinutes:string
+    SingleMinutes:string
 }
 
 // Functions have to be defined higher up in the file
 // than others which use them, which is an annoyance,
 // and against most coding guidelines
 // Probably there is a way of sorting this out
-let rowLights lightCharacter lightsOn lightsInRow =
+let rowLights lightCharacter lightOffCharacter lightsOn lightsInRow =
     String.Join("", Enumerable.Repeat(lightCharacter, lightsOn)) 
-    + String.Join("", Enumerable.Repeat('O', lightsInRow - lightsOn))
+    + String.Join("", Enumerable.Repeat(lightOffCharacter, lightsInRow - lightsOn))
 
-let rowLightsFromTimeUnit lightCharacter timeUnitPerLight berlinTimeUnit timeUnitLimit =
-    let lightsInRow = (timeUnitLimit - 1) / timeUnitPerLight
-    let lightsOn = berlinTimeUnit / timeUnitPerLight
+let parentRowLights lightCharacter lightOffCharacter julianTimeUnitPerLight julianTimeUnit timeUnitLimit =
+    let lightsInRow = (julianTimeUnitPerLight - 1) / julianTimeUnitPerLight
+    let lightsOn = julianTimeUnit / julianTimeUnitPerLight
     
-    rowLights lightCharacter lightsOn lightsInRow
+    rowLights lightCharacter lightOffCharacter lightsOn lightsInRow
 
-let remainderRowLights lightCharacter timeUnitPerLight berlinTimeUnit =
-    let lightsInRow = timeUnitPerLight - 1
-    let lightsOn = berlinTimeUnit % timeUnitPerLight
+let remainderRowLights lightCharacter lightOffCharacter julianTimeUnitPerLight julianTimeUnit =
+    let lightsInRow = julianTimeUnitPerLight - 1
+    let lightsOn = julianTimeUnit % julianTimeUnitPerLight
     
-    rowLights lightCharacter lightsOn lightsInRow
+    rowLights lightCharacter lightOffCharacter lightsOn lightsInRow
 
 
-let fromJulianTimeComponents hours minutes seconds =
+let fromJulianTimeComponents julianHours julianMinutes julianSeconds =
+    let lightOffCharacter = "O"
+    let secondsCharacter = "Y"
+    let hoursCharacter = "R"
+    let minutesCharacter = "Y"
+    let hoursInDay = 24
+    let fiveHours = 5
+    let minutesInHour = 60
+    let fiveMinutes = 5
     { 
-        Seconds = if (seconds % 2) = 1 then "O" else "Y";
-        FiveHours = rowLightsFromTimeUnit "R" 5 hours 24
-        SingleHours = remainderRowLights "R" 5 hours
-        FiveMinutes = rowLightsFromTimeUnit "Y" 5 minutes 60
-        SingleMinutes = remainderRowLights "Y" 5 minutes
+        Seconds = 
+            if (julianSeconds % 2) = 1 then lightOffCharacter else secondsCharacter
+        FiveHours = 
+            parentRowLights 
+                hoursCharacter 
+                lightOffCharacter 
+                fiveHours 
+                julianHours 
+                hoursInDay
+        SingleHours = 
+            remainderRowLights 
+                hoursCharacter 
+                lightOffCharacter 
+                fiveHours 
+                julianHours
+        FiveMinutes = 
+            parentRowLights 
+                minutesCharacter 
+                lightOffCharacter 
+                fiveMinutes 
+                julianMinutes 
+                minutesInHour
+        SingleMinutes = 
+            remainderRowLights 
+                minutesCharacter 
+                lightOffCharacter 
+                fiveMinutes 
+                julianMinutes
     }
 
 let fromJulianTime (julianTime : string) =
@@ -48,10 +79,10 @@ let fromJulianTime (julianTime : string) =
     match parseResult with
     | Success(result, _, _)   -> result
     | Failure(errorMessage, _, _) -> { 
-        Seconds = errorMessage; 
-        FiveHours = errorMessage; 
-        SingleHours = errorMessage; 
-        FiveMinutes = errorMessage;
-        SingleMinutes = errorMessage;
+        Seconds = errorMessage
+        FiveHours = errorMessage
+        SingleHours = errorMessage
+        FiveMinutes = errorMessage
+        SingleMinutes = errorMessage
       }
 
