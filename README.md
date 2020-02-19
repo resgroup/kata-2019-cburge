@@ -6,7 +6,13 @@ I was using a new language (F#), and was mostly adhering to [Functional Calisthe
 
 ## Solution
 
-The bulk of the solution is as follows, and the whole thing is under 100 lines long. F# has a reputation for being concise, which seems to be deserved.
+The files to look at are:
+
+ - [BerlinClock.fs](BerlinClock.fs)
+ - [test-kata-2019-cedd/Tests.fs](test-kata-2019-cedd/Tests.fs)
+
+The bulk of the solution is as follows, and the whole thing is under 100 lines long. F# has a reputation for being concise, 
+which seems to be deserved.
 
 ```f#
 Seconds = 
